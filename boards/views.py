@@ -10,15 +10,16 @@ def index(request):
     return render(request, 'boards/index.html', context)
     
 def new(request):
-    return render(request, 'boards/new.html')
-    
-def create(request):
-    title = request.POST.get('title')
-    content = request.POST.get('content')
-    
-    board = Board(title=title, content=content)
-    board.save()
-    return redirect('boards:detail', board.pk)
+    if request.method == 'POST':
+        # create
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        
+        board = Board(title=title, content=content)
+        board.save()
+        return redirect('boards:detail', board.pk)
+    else:
+        return render(request, 'boards/new.html')
     
 def detail(request, pk):
     board = Board.objects.get(pk=pk)
@@ -29,19 +30,24 @@ def detail(request, pk):
     
 def delete(request, pk):
     board = Board.objects.get(pk=pk)
-    board.delete()
-    return redirect('boards:index')
+    if request.method == 'POST':
+        board.delete()
+        return redirect('boards:index')
+    else:
+        return redirect('boards:detail', board.pk)
     
 def edit(request, pk):
-    board = Board.objects.get(pk=pk)
-    context = {
-        'board': board,
-    }
-    return render(request, 'boards/edit.html', context)
+    if request.method == 'POST':
+        # update
+        board = Board.objects.get(pk=pk)
+        board.title = request.POST.get('title')
+        board.content = request.POST.get('content')
+        board.save()
+        return redirect('boards:detail', board.pk)
+    else:
+        board = Board.objects.get(pk=pk)
+        context = {
+            'board': board,
+        }
+        return render(request, 'boards/edit.html', context)
     
-def update(request, pk):
-    board = Board.objects.get(pk=pk)
-    board.title = request.POST.get('title')
-    board.content = request.POST.get('content')
-    board.save()
-    return redirect('boards:detail', board.pk)
