@@ -1,6 +1,17 @@
 {% extends 'boards/base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'boards/stylesheets/index.css' %}">
+{% endblock %}
 {% block body %}
     <h1>Index</h1>
+    <h1 class='text-warning'>※신나는 달팽이 경주!!!!!※</h1>
+    <h2 class='text-danger'>귀엽고 ☆깜찍한☆ 1번마!</h2>
+    <h1><marquee class='text-danger' direction="RIGHT" scrollamount="{{ F_speed }}"> __@/``</marquee></h1>
+    <h2 class='text-dark'>나는 달팽이가 아니라 골뱅이라구! @_@</h2>
+    <h1><marquee class='text-dark' direction="RIGHT" scrollamount="{{ S_speed }}"> __@/``</marquee></h1>
+    <h2 class='text-light'>이젠 지겹다 3번마!</h2>
+    <h1><marquee class='text-light' direction="RIGHT" scrollamount="{{ T_speed }}"> __@/``</marquee></h1>
     <a href="{% url 'boards:new' %}">NEW</a>
     <hr>
     {% for board in boards %}
